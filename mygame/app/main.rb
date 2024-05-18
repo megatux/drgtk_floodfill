@@ -11,9 +11,11 @@ class ScreenMap
     @point_width = 27
     @map_rows = map.size
     @map_cols = map.first.size
+    @brush_color = 4
 
     args.outputs.static_labels << [50,600, "Paint example - Flood fill", 250,250,210]
-    args.outputs.static_labels << [150,570, "Click to fill ->", 230,110,210]
+    args.outputs.static_labels << [100,570, "Click to fill with:", 230,110,210]
+    args.outputs.static_solids << [290,545, point_width, point_width, **get_color(@brush_color)]
   end
 
   def paint(x, y, color)
@@ -35,7 +37,7 @@ class ScreenMap
   end
 
   def display_mouse_pos(args)
-    msg = "Mouse x:#{args.state.last_mouse_click.point.x.to_i} y:#{args.state.last_mouse_click.point.y.to_i}"
+    msg = "Mouse x:#{args.inputs.mouse.x.to_i} y:#{args.inputs.mouse.y.to_i}"
     args.outputs.labels << [110,530, msg, 200,100,100]
   end
 
@@ -59,7 +61,7 @@ class ScreenMap
     if m && m[0] <= @map_cols && m[1] <= @map_rows
       msg = "col:#{m[0]} row:#{m[1]} painted"
       args.outputs.labels << [100,500, msg, 200,100,100]
-      paint(m[0], m[1], 4)
+      paint(m[0], m[1], @brush_color)
     end
   end
 
@@ -92,8 +94,8 @@ end
   [0, 0, 2, 0, 0, 3, 4, 4, 0, 0, 0, 1, 2, 3, 4],
   [0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 2, 3, 4],
   [0, 0, 1, 0, 3, 1, 0, 0, 0, 0, 0, 1, 2, 3, 4],
-  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0],
-  [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 2, 0, 1],
+  [0, 0, 0, 0, 1, 0, 0, 3, 3, 3, 0, 1, 2, 0, 0],
+  [0, 0, 0, 0, 2, 0, 0, 3, 3, 3, 0, 1, 2, 0, 1],
   [0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0],
   [4, 0, 2, 0, 0, 3, 4, 4, 0, 0, 0, 1, 2, 3, 4],
   [3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4],
