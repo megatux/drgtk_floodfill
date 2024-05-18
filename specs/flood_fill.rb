@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require_relative '../mygame/app/flood_fill'
+require_relative '../mygame/app/map'
 
 describe "Map" do
   subject { Map.new(map, debug: true) }
