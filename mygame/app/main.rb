@@ -15,7 +15,7 @@ class ScreenMap
 
     args.outputs.static_labels << [50,600, "Paint example - Flood fill", 250,250,210]
     args.outputs.static_labels << [100,570, "Click to fill with:", 230,110,210]
-    args.outputs.static_solids << [290,545, cell_width, cell_width, **get_color(@brush_color)]
+    args.outputs.static_solids << [290,545, cell_width, cell_width, *get_color(@brush_color)]
   end
 
   def paint(x, y, color)
@@ -61,7 +61,7 @@ class ScreenMap
       map_start_x + (x*cell_width),
       map_start_y - (y*cell_width),
       cell_width, cell_width,
-      **get_color(color)
+      *get_color(color)
     ]
   end
 
