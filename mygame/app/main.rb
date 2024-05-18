@@ -41,6 +41,10 @@ class ScreenMap
   def display_mouse_pos(args)
     msg = "Mouse x:#{args.inputs.mouse.x.to_i} y:#{args.inputs.mouse.y.to_i}"
     args.outputs.labels << [110,530, msg, 200,100,100]
+    if @last_painted_cell
+      msg = "col:#{@last_painted_cell[0]} row:#{@last_painted_cell[1]} painted"
+      args.outputs.labels << [100,500, msg, 200,100,100]
+    end
   end
 
   def draw_map(args)
@@ -63,10 +67,10 @@ class ScreenMap
 
   def handle_click(args)
     m = map_cell_from_click(args.state.last_mouse_click)
+
     if m && m[0] <= @map_cols && m[1] <= @map_rows
-      msg = "col:#{m[0]} row:#{m[1]} painted"
-      args.outputs.labels << [100,500, msg, 200,100,100]
       paint(m[0], m[1], @brush_color)
+      @last_painted_cell = m
     end
   end
 
