@@ -1,9 +1,8 @@
 require 'minitest/autorun'
-require_relative '../flood_fill'
+require_relative '../mygame/app/flood_fill'
 
 describe "Map" do
-  subject { Map.new(map, true) }
-  let(:color) { 8 }
+  subject { Map.new(map, debug: true) }
 
   describe "empty map" do
     let(:map) { [
@@ -15,14 +14,14 @@ describe "Map" do
     ] }
 
     it "should paint all" do
-      subject.paint(1, 1, 0, color, 0.1)
+      subject.paint(x: 1, y: 1, color: 8)
 
       assert_equal subject.map, [
-        [color, color, color, color, color],
-        [color, color, color, color, color],
-        [color, color, color, color, color],
-        [color, color, color, color, color],
-        [color, color, color, color, color],
+        [8, 8, 8, 8, 8],
+        [8, 8, 8, 8, 8],
+        [8, 8, 8, 8, 8],
+        [8, 8, 8, 8, 8],
+        [8, 8, 8, 8, 8],
       ]
     end
   end
@@ -37,7 +36,7 @@ describe "Map" do
     ] }
 
     it "should paint all" do
-      subject.paint(1, 1, 0, 8, 0.8)
+      subject.paint(x: 1, y: 1, old_color: 0, color: 8, sleep_time: 0.8)
 
       assert_equal subject.map, [
         [8, 8, 8, 8, 8],
@@ -58,7 +57,7 @@ describe "Map" do
       ] }
 
       it "should paint all" do
-        subject.paint(2, 1, 2, 8, 0.8)
+        subject.paint(x: 2, y: 1, old_color: 2, color: 8, sleep_time: 0.8)
 
         assert_equal subject.map, [
           [0, 0, 0, 0, 0],
