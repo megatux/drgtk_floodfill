@@ -14,7 +14,7 @@ describe "Map" do
     ] }
 
     it "should paint all" do
-      subject.paint(x: 1, y: 1, color: 8)
+      subject.paint(x: 1, y: 1, old_color: 0, color: 8)
 
       assert_equal subject.map, [
         [8, 8, 8, 8, 8],
@@ -66,6 +66,22 @@ describe "Map" do
           [8, 8, 8, 0, 0],
           [0, 0, 8, 0, 5],
         ]
+      end
+    end
+
+    describe "no paint needed" do
+      let(:map) { [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+      ] }
+
+      it "should paint all" do
+        subject.paint(x: 2, y: 1, old_color: 0, color: 0, sleep_time: 0.8)
+
+        assert_equal subject.map, map
       end
     end
   end

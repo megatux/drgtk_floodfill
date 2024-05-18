@@ -6,12 +6,14 @@ class Map
     @debug = debug
   end
 
-  def paint(x:, y:, old_color: nil, color:, sleep_time: 0)
-    old_color ||= map[y][x]
+  def paint(x:, y:, old_color:, color:, sleep_time: 0)
+    return if color == old_color
+
     coords_inside_matrix = y >= 0 && y < map.size && x >= 0 && x < map[0].size
     pixel_should_be_painted = coords_inside_matrix && map[y][x] == old_color
 
     return unless pixel_should_be_painted
+
     map[y][x] = color
     puts "paint(#{x}-#{y})" if @debug
     puts("  changing x:#{x} y:#{y}") if pixel_should_be_painted && @debug
