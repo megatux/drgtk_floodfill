@@ -1,7 +1,9 @@
 require "app/map.rb"
 
 class ScreenMap
-  attr_accessor :map, :map_start_x, :map_start_y, :cell_width
+  attr_accessor :map, :map_start_x, :map_start_y, :cell_width, :brush_color
+
+  COLORS = [[255,0,0], [0,255,0], [0,0,255], [180,180,180], [0, 100, 150], [50,50,50]]
 
   def initialize(map, args)
     @map = map
@@ -12,10 +14,14 @@ class ScreenMap
     @map_rows = map.size
     @map_cols = map.first.size
     @brush_color = 4
+    @palette_start = {
+      x: 260.from_left,
+      y: 300.from_top,
+      width: 50
+    }
 
     args.outputs.static_labels << [50,600, "Paint example - Flood fill", 250,250,210]
     args.outputs.static_labels << [100,570, "Click to fill with:", 230,110,210]
-    args.outputs.static_solids << [290,545, cell_width, cell_width, *get_color(@brush_color)]
   end
 
   def paint(x, y, color)
@@ -23,6 +29,8 @@ class ScreenMap
   end
 
   def tick(args)
+    args.gtk.request_quit if args.inputs.keyboard.key_down.escape
+
     if args.inputs.mouse.click
       args.state.last_mouse_click = args.inputs.mouse.click
       handle_click(args)
@@ -31,11 +39,12 @@ class ScreenMap
     draw_bg(args)
     display_mouse_pos(args)
     draw_map(args)
+    draw_color_palette(args)
   end
 
   def draw_bg(args)
     args.outputs.solids << [0,0,1280,720, 0,0,0]
-    args.outputs.solids << [350,100,620,560, 0,0,80]
+    args.outputs.solids << [350,150,520,520, 0,0,80]
   end
 
   def display_mouse_pos(args)
@@ -66,12 +75,44 @@ class ScreenMap
     }
   end
 
+  def draw_color_palette(args)
+    color = get_color(@brush_color)
+
+    args.outputs.static_solids << {
+      x: 290, y: 545, w: cell_width, h: cell_width,
+      r: color[0], g: color[1], b: color[2]
+    }
+    COLORS.each_with_index do |c, i|
+      args.outputs.solids << {
+        x: @palette_start[:x], y: @palette_start[:y] - (i*50),
+        w: @palette_start[:width], h: @palette_start[:width],
+        r: c[0], g: c[1], b: c[2]
+      }
+    end
+  end
+
   def handle_click(args)
-    m = map_cell_from_click(args.state.last_mouse_click)
+    click = args.state.last_mouse_click
+    return if handle_palette_click(args, click)
+
+    m = map_cell_from_click(click)
 
     if m && m[0] <= @map_cols && m[1] <= @map_rows
       paint(m[0], m[1], @brush_color)
       @last_painted_cell = m
+    end
+  end
+
+  def handle_palette_click(args, click)
+    x = click.point.x
+    y = click.point.y
+    palette_down = @palette_start[:width]*(COLORS.size-1)
+    if x >= @palette_start[:x] && x <= @palette_start[:x] + @palette_start[:width] &&
+       y <= @palette_start[:y] + @palette_start[:width] && y >= @palette_start[:y] - palette_down
+
+      palette_idx = (((720-y+palette_down) / 50)-10).to_i
+      @brush_color = palette_idx
+      return true
     end
   end
 
@@ -92,7 +133,7 @@ class ScreenMap
   end
 
   def get_color(i)
-    [ [255,0,0], [0,255,0], [0,0,255], [180,180,180], [0, 100, 150], [50,50,50] ][i]
+    COLORS[i]
   end
 end
 
