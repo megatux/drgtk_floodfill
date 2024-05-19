@@ -57,12 +57,13 @@ class ScreenMap
   end
 
   def draw_cell(args, x, y, color)
-    args.outputs.solids << [
-      map_start_x + (x*cell_width),
-      map_start_y - (y*cell_width),
-      cell_width, cell_width,
-      *get_color(color)
-    ]
+    rgb = get_color(color)
+    args.outputs.solids << {
+      x: map_start_x + (x*cell_width),
+      y: map_start_y - (y*cell_width),
+      w: cell_width, h: cell_width,
+      r: rgb[0], g: rgb[1], b: rgb[2]
+    }
   end
 
   def handle_click(args)

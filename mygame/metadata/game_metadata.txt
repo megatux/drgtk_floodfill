@@ -2,7 +2,7 @@ devid=megatux
 devtitle=Megatux the game developer
 gameid=flood-fill-example
 gametitle=Flood fill algorithm example
-version=0.2
+version=0.3
 icon=metadata/icon.png
 
 # === Flags available at all licensing tiers ===
