@@ -25,7 +25,7 @@ class ScreenMap
   end
 
   def paint(x, y, color)
-    @map_painter.paint(x: x, y: y, old_color: @map[y][x], color: color)
+    @map_painter.paint(x: x, y: y, base_color: @map[y][x], new_color: color)
   end
 
   def tick(args)

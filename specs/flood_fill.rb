@@ -14,7 +14,7 @@ describe "Map" do
     ] }
 
     it "should paint all" do
-      subject.paint(x: 1, y: 1, old_color: 0, color: 8)
+      subject.paint(x: 1, y: 1, base_color: 0, new_color: 8)
 
       assert_equal subject.map, [
         [8, 8, 8, 8, 8],
@@ -36,7 +36,7 @@ describe "Map" do
     ] }
 
     it "should paint all" do
-      subject.paint(x: 1, y: 1, old_color: 0, color: 8, sleep_time: 0.8)
+      subject.paint(x: 1, y: 1, base_color: 0, new_color: 8, sleep_time: 0.8)
 
       assert_equal subject.map, [
         [8, 8, 8, 8, 8],
@@ -57,7 +57,7 @@ describe "Map" do
       ] }
 
       it "should paint all" do
-        subject.paint(x: 2, y: 1, old_color: 2, color: 8, sleep_time: 0.8)
+        subject.paint(x: 2, y: 1, base_color: 2, new_color: 8, sleep_time: 0.8)
 
         assert_equal subject.map, [
           [0, 0, 0, 0, 0],
@@ -79,7 +79,7 @@ describe "Map" do
       ] }
 
       it "should paint all" do
-        subject.paint(x: 2, y: 1, old_color: 0, color: 0, sleep_time: 0.8)
+        subject.paint(x: 2, y: 1, base_color: 0, new_color: 0, sleep_time: 0.8)
 
         assert_equal subject.map, map
       end
